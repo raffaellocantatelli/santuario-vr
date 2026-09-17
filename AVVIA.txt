@@ -1,0 +1,4 @@
+1. Senza visore: apri index.html
+2. Con visore: pubblica la cartella su Pages e apri il link nel browser del Quest
+3. Tieni premuto sulla candela 12 secondi
+4. Esci e fai un atto vero
