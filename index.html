@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Santuario — Protocollo Rosso</title>
+  <meta name="description" content="Un gesto lento. Colonne che non reggono nulla. Una candela. Poi un atto vero." />
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <style>
+    html, body { margin: 0; height: 100%; background: #140e0c; color: #e8d7c4; font-family: Georgia, "Times New Roman", serif; }
+    #hud {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+      padding: 1.2rem 1.4rem 1.6rem;
+      background: linear-gradient(transparent, rgba(12,8,7,.92));
+      pointer-events: none;
+      text-align: center;
+      letter-spacing: .04em;
+    }
+    #hud p { margin: 0; font-size: 1.05rem; line-height: 1.45; text-shadow: 0 1px 12px #000; }
+    #hud .sub { margin-top: .45rem; font-size: .82rem; opacity: .72; font-style: italic; }
+    .a-enter-vr-button, .a-enter-ar-button {
+      background: #6b1c1c !important;
+      border-radius: 2px !important;
+    }
+  </style>
+</head>
+<body>
+  <div id="hud">
+    <p id="line">Il rumore resta fuori.</p>
+    <p class="sub" id="sub">Occhiali: Enter VR. Senza visore: click e WASD.</p>
+  </div>
+
+  <a-scene
+    renderer="colorManagement: true; physicallyCorrectLights: true; exposure: 0.85"
+    fog="type: exponential; color: #241614; density: 0.035"
+    background="color: #1a1210"
+    vr-mode-ui="enabled: true"
+    loading-screen="dotsColor: #8a2a2a; backgroundColor: #140e0c"
+    shadow="type: pcfsoft"
+  >
+    <a-assets>
+      <a-mixin id="colonna"
+        geometry="primitive: cylinder; radius: 0.28; height: 5.2"
+        material="color: #6a5a4e; roughness: 0.92; metalness: 0.02"
+        shadow="cast: true; receive: true"></a-mixin>
+      <a-mixin id="base"
+        geometry="primitive: cylinder; radius: 0.42; height: 0.22"
+        material="color: #5a4b40; roughness: 0.95"></a-mixin>
+    </a-assets>
+
+    <a-sky color="#2b1c1a"></a-sky>
+    <a-entity light="type: hemisphere; skyColor: #c47a4a; groundColor: #1a0e0c; intensity: 0.35"></a-entity>
+    <a-entity light="type: directional; color: #e09a62; intensity: 0.45; castShadow: true"
+              position="-6 8 -4"
+              shadow="mapSize: 2048"></a-entity>
+    <a-entity id="luna" light="type: point; color: #8aa0b8; intensity: 0.25; distance: 28" position="3 7 6"></a-entity>
+
+    <a-plane rotation="-90 0 0" width="48" height="48"
+             material="color: #2c241f; roughness: 1; metalness: 0"
+             shadow="receive: true"></a-plane>
+
+    <a-entity position="-4.2 2.6 -3.2"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+    <a-entity position="4.2 2.6 -3.2"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+    <a-entity position="-4.2 2.6 3.2"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+    <a-entity position="4.2 2.6 3.2"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+    <a-entity position="0 2.6 -6.4"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+    <a-entity position="0 2.6 6.4"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+    <a-entity position="-6.4 2.6 0"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+    <a-entity position="6.4 2.6 0"><a-entity mixin="colonna"></a-entity><a-entity mixin="base" position="0 -2.5 0"></a-entity></a-entity>
+
+    <a-box position="0 0.42 -1.35" width="1.6" height="0.84" depth="0.85"
+           material="color: #4a3f38; roughness: 0.96"
+           shadow="cast: true; receive: true"></a-box>
+    <a-box position="0 0.92 -1.28" width="0.62" height="0.08" depth="0.42"
+           rotation="-8 12 0"
+           material="color: #3a342e; roughness: 1"
+           shadow="cast: true"></a-box>
+    <a-text value="non si legge\nsi sente pesare"
+            align="center" width="1.6" color="#cbb9a4"
+            position="0 1.22 -1.28" rotation="-20 0 0"
+            font="kelsonsans"></a-text>
+
+    <a-entity id="candela" position="0.38 0.88 -1.05" class="clickable" hold-light="seconds: 12">
+      <a-cylinder radius="0.035" height="0.22" material="color: #e8dcc8; roughness: 0.7"></a-cylinder>
+      <a-sphere id="wick" position="0 0.13 0" radius="0.012" material="color: #2a2018"></a-sphere>
+      <a-entity id="fiamma" visible="false" position="0 0.22 0">
+        <a-cone radius-bottom="0.04" radius-top="0.002" height="0.16"
+                material="color: #ffb060; emissive: #ff7a20; emissiveIntensity: 1.4; opacity: 0.92; transparent: true"></a-cone>
+        <a-entity light="type: point; color: #ff9a40; intensity: 0.95; distance: 7"></a-entity>
+      </a-entity>
+    </a-entity>
+
+    <a-entity id="rig" position="0 1.6 4.2">
+      <a-camera look-controls wasd-controls="acceleration: 18">
+        <a-cursor fuse="false" raycaster="objects: .clickable"
+                  material="color: #c45c4a; shader: flat"
+                  geometry="primitive: ring; radiusInner: 0.008; radiusOuter: 0.014"></a-cursor>
+      </a-camera>
+      <a-entity laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+      <a-entity laser-controls="hand: left" raycaster="objects: .clickable"></a-entity>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    const line = document.getElementById("line");
+    const sub = document.getElementById("sub");
+    const nearAltar = () => {
+      const cam = document.querySelector("[camera]");
+      if (!cam) return false;
+      const V3 = (window.THREE || AFRAME.THREE).Vector3;
+      const p = cam.object3D.getWorldPosition(new V3());
+      return p.distanceTo(new V3(0, 1.6, -1.1)) < 2.4;
+    };
+
+    const phases = [
+      [0, "Il rumore resta fuori."],
+      [8, "Crepuscolo. Il giorno ha finito di chiedere."],
+      [18, "Le colonne non reggono nulla. Puoi smettere di reggere."],
+      [32, "Sull\u2019altare un libro di pietra. Una candela."],
+    ];
+    let t0 = performance.now();
+    let last = "";
+    function tickHud() {
+      const s = (performance.now() - t0) / 1000;
+      let msg = phases[0][1];
+      for (const [at, text] of phases) if (s >= at) msg = text;
+      if (nearAltar() && !document.getElementById("fiamma").getAttribute("visible")) {
+        msg = "Tieni premuto sulla candela. Lento. Dodici secondi.";
+      }
+      if (msg !== last) { line.textContent = msg; last = msg; }
+      requestAnimationFrame(tickHud);
+    }
+    tickHud();
+
+    AFRAME.registerComponent("hold-light", {
+      schema: { seconds: { type: "number", default: 12 } },
+      init() {
+        this.holding = false;
+        this.acc = 0;
+        this.done = false;
+        const start = () => { if (!this.done) this.holding = true; };
+        const stop = () => { this.holding = false; };
+        this.el.addEventListener("mousedown", start);
+        this.el.addEventListener("mouseup", stop);
+        window.addEventListener("mouseup", stop);
+        this.el.addEventListener("triggerdown", start);
+        this.el.addEventListener("triggerup", stop);
+      },
+      tick(t, dt) {
+        if (this.done || !this.holding) return;
+        this.acc += dt / 1000;
+        const left = Math.max(0, this.data.seconds - this.acc);
+        line.textContent = left > 0
+          ? "Il gesto. Resta. " + left.toFixed(0) + "s"
+          : "La fiamma c\u2019è.";
+        sub.textContent = "Non sblocca porte. Rieduca la mano.";
+        if (this.acc >= this.data.seconds) {
+          this.done = true;
+          this.holding = false;
+          document.getElementById("fiamma").setAttribute("visible", true);
+          line.textContent = "Candela accesa. Lento. Intero.";
+          sub.textContent = "Ora esci. Una cosa vera, che un altro possa controllare.";
+        }
+      }
+    });
+  </script>
+</body>
+</html>
